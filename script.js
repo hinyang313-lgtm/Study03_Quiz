@@ -458,9 +458,32 @@ function renderResultList() {
   });
 }
 
-// 작업 13(틀린 문제 복습)에서 채운다.
+// 복습 대상 목록. 원래 판이면 wrongIds, 복습 라운드 뒤면 reviewWrongIds.
+function retryTargetIds() {
+  return state.isReview ? state.reviewWrongIds : state.wrongIds;
+}
+
+// 복습 버튼은 연습 모드이고 다시 풀 문항이 있을 때만 보인다.
 function updateRetryButton() {
-  $('result-retry').hidden = true;
+  const canRetry = MODES[state.mode].retry && retryTargetIds().length > 0;
+  $('result-retry').hidden = !canRetry;
+}
+
+// 틀린 문항만으로 라운드를 시작한다. 점수와 원래 틀린 목록은 건드리지 않는다 (PRD 3.5).
+function startReviewRound() {
+  const ids = retryTargetIds().slice();
+  if (ids.length === 0) return;
+
+  state.questions = buildRoundFromIds(state.category, ids);
+  state.index = 0;
+  state.results = [];
+  state.reviewWrongIds = [];
+  state.answered = false;
+  state.hintUsed = false;
+  state.isReview = true;
+
+  showScreen('quiz');
+  renderQuestion();
 }
 
 // 스피드 모드 타이머. timeLimit이 null인 모드에서는 타이머를 아예 만들지 않는다.
@@ -563,6 +586,7 @@ if (typeof document !== 'undefined') {
     $('result-home').addEventListener('click', goHome);
     $('mode-back').addEventListener('click', goHome);
     $('quiz-hint').addEventListener('click', useHint);
+    $('result-retry').addEventListener('click', startReviewRound);
     renderCategoryScreen();
   });
 }
