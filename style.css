@@ -1,0 +1,183 @@
+/* 기본 타이포그래피와 중앙 정렬 컨테이너 (데스크톱 우선) */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #222;
+  background: #f5f6fa;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 16px;
+}
+
+/* 모바일 폭에서 여백만 줄인다 */
+@media (max-width: 480px) {
+  .container {
+    padding: 16px 12px;
+  }
+}
+
+/* 공통 버튼 */
+.button-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.big-button {
+  font: inherit;
+  padding: 14px 16px;
+  border: 1px solid #c9ccd6;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.big-button:hover:not(:disabled) {
+  border-color: #4a6cf7;
+  background: #f0f3ff;
+}
+
+.note {
+  color: #8a8f9c;
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+/* 문제 화면 */
+.quiz-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e4ea;
+  color: #5b6070;
+  font-size: 14px;
+}
+
+#quiz-question {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.choice.is-correct {
+  border-color: #1b9e5a;
+  background: #e8f7ee;
+  font-weight: 700;
+}
+
+.choice.is-wrong {
+  border-color: #d33a3a;
+  background: #fdecec;
+}
+
+.feedback {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e2e4ea;
+}
+
+.verdict {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.verdict-correct { color: #1b9e5a; }
+.verdict-wrong,
+.verdict-timeout { color: #d33a3a; }
+
+.explanation {
+  margin: 0;
+}
+
+.source {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #8a8f9c;
+}
+
+.next-button {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 700;
+}
+
+/* 결과 화면 */
+.result-score {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+
+.result-subtitle {
+  font-size: 16px;
+  margin: 28px 0 12px;
+  color: #5b6070;
+}
+
+.result-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.result-item {
+  padding: 12px 14px;
+  border: 1px solid #e2e4ea;
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.result-correct { border-left-color: #1b9e5a; }
+.result-wrong,
+.result-timeout { border-left-color: #d33a3a; }
+
+.badge {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.badge-correct { color: #1b9e5a; }
+.badge-wrong,
+.badge-timeout { color: #d33a3a; }
+
+.result-question {
+  margin: 6px 0 0;
+}
+
+.result-answer {
+  margin: 6px 0 0;
+  font-weight: 700;
+}
