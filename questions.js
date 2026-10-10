@@ -167,7 +167,93 @@ const QUESTIONS = {
       source: 'Encyclopedia.com: Kaliningrad, East Prussia, Lithuania 항목, EU 집행위원회 칼리닌그라드 통신문 COM(2001) 26, BESA 센터: Kaliningrad — Russia’s Exclave in Europe (2026-10 확인)'
     }
   ],
-  science: [],
+  science: [
+    {
+      id: 'science-01',
+      question: '2019년에 개정된 국제단위계(SI)에서 질량의 단위 킬로그램은 어떤 상수의 값을 고정하는 방식으로 정의되는가?',
+      choices: ['볼츠만 상수', '플랑크 상수', '아보가드로 상수', '중력 상수'],
+      answerIndex: 1,
+      explanation: '플랑크 상수를 6.62607015×10⁻³⁴ J·s로 고정해 정의하며, 아보가드로 상수는 몰, 볼츠만 상수는 켈빈의 정의에 쓰이고 중력 상수는 고정값이 아닌 측정값이다.',
+      source: 'NIST: Definitions of the SI base units, NIST CODATA: Newtonian constant of gravitation 항목 (2026-10 확인)'
+    },
+    {
+      id: 'science-02',
+      question: '천둥·번개가 칠 때 창문을 닫고 승용차 안에 머무르면 비교적 안전한 이유로 옳은 것은?',
+      choices: [
+        '고무 타이어가 차체를 땅과 전기적으로 끊어 주기 때문',
+        '차체가 낮아서 벼락이 떨어질 가능성이 거의 없기 때문',
+        '두꺼운 유리창이 번개의 전기 에너지를 흡수해 주기 때문',
+        '금속 차체가 전류를 겉면으로 흘려 땅으로 보내기 때문'
+      ],
+      answerIndex: 3,
+      explanation: '미국 기상청은 보호 효과가 타이어가 아니라 금속 지붕과 옆면에서 나온다고 설명하며, 번개는 금속 차체를 지나 타이어를 거쳐 땅으로 빠진다.',
+      source: 'NWS: Lightning and Cars, NWS 뉴욕 지부 Lightning Safety Awareness Week 항목 (2026-10 확인)'
+    },
+    {
+      id: 'science-03',
+      question: '25℃, 1기압에서 액체 상태로 존재하는 비금속 원소는?',
+      choices: ['염소', '수은', '브로민', '아이오딘'],
+      answerIndex: 2,
+      explanation: '브로민은 녹는점 265.8 K(약 -7℃), 끓는점 332 K(약 59℃)라 액체이고, 같은 조건에서 액체인 수은은 금속이며 염소는 기체, 아이오딘은 고체이다.',
+      source: '로스앨러모스 국립연구소 주기율표: 브로민·수은·염소·아이오딘 항목 (2026-10 확인)'
+    },
+    {
+      id: 'science-04',
+      question: 'pH 3인 용액은 pH 5인 용액보다 수소 이온(H⁺) 농도가 몇 배 높은가?',
+      choices: ['2배', '10배', '100배', '1,000배'],
+      answerIndex: 2,
+      explanation: 'pH는 H⁺ 농도의 상용로그에 음의 부호를 붙인 값이라 pH가 1 낮아질 때마다 농도가 10배가 되므로, 2 차이는 10×10=100배이다.',
+      source: 'NOAA PMEL: A primer on pH, EPA CADDIS: pH 항목 (2026-10 확인)'
+    },
+    {
+      id: 'science-05',
+      question: '식물이 광합성을 할 때 방출하는 산소 기체(O₂)의 산소 원자는 원래 어떤 물질에 들어 있던 것인가?',
+      choices: ['물(H₂O)', '이산화탄소(CO₂)', '포도당(C₆H₁₂O₆)', 'ATP(아데노신 3인산)'],
+      answerIndex: 0,
+      explanation: '1941년 루벤과 카멘이 산소 동위원소 ¹⁸O로 표지한 물을 이용한 실험으로, 방출되는 O₂가 이산화탄소가 아닌 물의 산화에서 나온다는 것이 확인되었다.',
+      source: 'Photosynthesis: basics, history and modelling (PMC 논문) (2026-10 확인)'
+    },
+    {
+      id: 'science-06',
+      question: '표준 유전부호에서 mRNA의 코돈 AUG가 지정하는 아미노산은?',
+      choices: ['아이소류신', '트립토판', '발린', '메싸이오닌'],
+      answerIndex: 3,
+      explanation: 'AUG는 메싸이오닌을 지정하면서 번역의 개시 코돈으로도 쓰이며, 이와 비슷해 보이는 AUU·AUC·AUA는 아이소류신, UGG는 트립토판, GUN은 발린을 지정한다.',
+      source: 'NCBI Taxonomy: The Genetic Codes, 표준 유전부호(Table 1) (2026-10 확인)'
+    },
+    {
+      id: 'science-07',
+      question: '모호로비치치 불연속면(모호면)은 지구 내부의 어느 두 층 사이의 경계인가?',
+      choices: ['맨틀과 외핵', '외핵과 내핵', '지각과 맨틀', '상부 맨틀과 하부 맨틀'],
+      answerIndex: 2,
+      explanation: '1909년 크로아티아 지진을 분석한 모호로비치치가 지진파 속도가 아래쪽으로 급격히 빨라지는 지점으로 찾아냈으며, 그 깊이는 해양 아래에서 얕고 대륙 아래에서 깊다.',
+      source: 'USGS: The Interior of the Earth, USGS: Inside the Earth (This Dynamic Earth), IRIS: What is the Moho? (2026-10 확인)'
+    },
+    {
+      id: 'science-08',
+      question: '수증기를 뺀 건조 공기를 부피 비율로 따졌을 때, 질소와 산소 다음으로 많은 기체는?',
+      choices: ['아르곤', '이산화탄소', '네온', '헬륨'],
+      answerIndex: 0,
+      explanation: '건조 공기의 부피비는 질소 78.084%, 산소 20.946%, 아르곤 0.934%이며, 이산화탄소는 약 0.042%로 아르곤의 5% 미만이다.',
+      source: 'NOAA JetStream: 건조 공기 조성표 (2026-10 확인)'
+    },
+    {
+      id: 'science-09',
+      question: '우주 마이크로파 배경복사를 흑체 복사로 볼 때, 현재 그 온도에 가장 가까운 값은?',
+      choices: ['약 0.27 K', '약 2.7 K', '약 27 K', '약 270 K'],
+      answerIndex: 1,
+      explanation: 'COBE 위성의 FIRAS가 2.725±0.002 K의 거의 완벽한 흑체 스펙트럼으로 측정했고, 이는 빅뱅 후 약 37만 5천 년에 방출된 빛이 식은 것이다.',
+      source: 'NASA LAMBDA: COBE FIRAS 개요, NASA Science: WMAP 개요 (2026-10 확인)'
+    },
+    {
+      id: 'science-10',
+      question: '달에 설치된 반사경에 레이저를 쏘아 왕복 시간을 재어 보면, 달은 지구에서 해마다 얼마씩 멀어지고 있는가?',
+      choices: ['약 3.8 mm', '약 3.8 cm', '약 38 cm', '약 3.8 m'],
+      answerIndex: 1,
+      explanation: '달이 멀어지는 속도는 손톱이 자라는 속도와 비슷한 연 약 3.8 cm이며, NASA는 지구와 달 사이의 중력 상호작용 때문이라고 설명한다.',
+      source: 'NASA: Laser Beams Reflected Between Earth and Moon Boost Science, NASA JPL: Apollo 11 Experiment Continues to Return Valuable Data (2026-10 확인)'
+    }
+  ],
   culture: []
 };
 
