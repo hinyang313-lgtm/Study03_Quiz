@@ -123,8 +123,8 @@ const QUESTIONS = {
       question: '중국·미얀마·라오스·태국·캄보디아·베트남, 6개국을 차례로 거쳐 삼각주를 이루는 강은?',
       choices: ['이라와디강', '살윈강', '차오프라야강', '메콩강'],
       answerIndex: 3,
-      explanation: '길이가 5,000km에 가까운 이 강은 중국의 칭짱(티베트) 고원에서 발원한다.',
-      source: '메콩강위원회(MRC): Geography, Mekong River Basin (2026-10 확인)'
+      explanation: '길이는 MRC 기준 약 4,900km, Encyclopedia.com 기준 약 4,180km로 측정 방식에 따라 다르며, 중국 구간에서는 란창강이라 부른다.',
+      source: '메콩강위원회(MRC): Geography, Mekong River Basin, Encyclopedia.com: Mekong 항목 (2026-10 확인)'
     },
     {
       id: 'geography-06',
@@ -163,8 +163,8 @@ const QUESTIONS = {
       question: '러시아 본토와 떨어져 있으면서 폴란드·리투아니아와만 육지 국경을 맞댄 러시아의 행정구역은?',
       choices: ['프스코프주', '칼리닌그라드주', '레닌그라드주', '카렐리야 공화국'],
       answerIndex: 1,
-      explanation: '옛 동프로이센의 중심 지역으로, 2차 세계대전 후 소련에 편입되어 지금은 EU 회원국인 두 나라와 맞닿아 있다.',
-      source: 'EU 집행위원회 칼리닌그라드 통신문 COM(2001) 26, Encyclopedia.com: Lithuania 항목, BESA 센터: Kaliningrad — Russia’s Exclave in Europe (2026-10 확인)'
+      explanation: '옛 동프로이센의 북쪽 3분의 1로, 1945년 포츠담 회담에서 소련에 넘겨졌고 지금은 EU 회원국인 두 나라와 맞닿아 있다.',
+      source: 'Encyclopedia.com: Kaliningrad, East Prussia, Lithuania 항목, EU 집행위원회 칼리닌그라드 통신문 COM(2001) 26, BESA 센터: Kaliningrad — Russia’s Exclave in Europe (2026-10 확인)'
     }
   ],
   science: [],
