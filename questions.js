@@ -99,8 +99,8 @@ const QUESTIONS = {
       question: '빈, 브라티슬라바, 부다페스트, 베오그라드 네 수도를 모두 지나는 유럽의 강은?',
       choices: ['도나우강', '라인강', '엘베강', '비스와강'],
       answerIndex: 0,
-      explanation: '독일 슈바르츠발트에서 발원해 유럽 10개국을 거쳐 흑해 연안의 삼각주로 흘러든다.',
-      source: 'WorldAtlas: Which River Passes Through Most National Capital Cities?, Wikipedia: Danube (2026-10 확인)'
+      explanation: '독일 슈바르츠발트에서 발원해 10개국을 지나며, 길이는 약 2,850km이다.',
+      source: 'Encyclopedia.com: Vienna, Bratislava, Budapest, Belgrade 항목, 한국경제 천자칼럼 도나우강의 물 부족 (2026-10 확인)'
     },
     {
       id: 'geography-03',
@@ -116,7 +116,7 @@ const QUESTIONS = {
       choices: ['태평양판과 남극판', '태평양판과 오스트레일리아판', '나스카판과 남극판', '오스트레일리아판과 남극판'],
       answerIndex: 1,
       explanation: '두 판이 수평으로 어긋나며 스치는 변환단층이며, 한쪽 판의 융기로 남알프스 산맥이 솟아올랐다.',
-      source: 'Science Learning Hub(뉴질랜드): The Alpine Fault (2026-10 확인)'
+      source: '뉴질랜드 자연재해위원회(Toka Tū Ake): 알파인 단층 고지진 연구 보고서, Science Learning Hub: The Alpine Fault (2026-10 확인)'
     },
     {
       id: 'geography-05',
@@ -164,7 +164,7 @@ const QUESTIONS = {
       choices: ['프스코프주', '칼리닌그라드주', '레닌그라드주', '카렐리야 공화국'],
       answerIndex: 1,
       explanation: '옛 동프로이센의 중심 지역으로, 2차 세계대전 후 소련에 편입되어 지금은 EU 회원국인 두 나라와 맞닿아 있다.',
-      source: 'BESA 센터: Kaliningrad — Russia’s Exclave in Europe (2026-10 확인)'
+      source: 'EU 집행위원회 칼리닌그라드 통신문 COM(2001) 26, Encyclopedia.com: Lithuania 항목, BESA 센터: Kaliningrad — Russia’s Exclave in Europe (2026-10 확인)'
     }
   ],
   science: [],
