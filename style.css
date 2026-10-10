@@ -253,3 +253,14 @@ h1 {
   background: #f2f3f6;
   border-color: #e2e4ea;
 }
+
+/* 페이지 맨 위의 제출자 표시 */
+.identity {
+  padding: 10px 16px;
+  background: #2b2f3a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
