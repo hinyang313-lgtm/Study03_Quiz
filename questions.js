@@ -85,7 +85,88 @@ const QUESTIONS = {
       source: '한국민족문화대백과사전 4·19혁명 (2026-10 확인)'
     }
   ],
-  geography: [],
+  geography: [
+    {
+      id: 'geography-01',
+      question: '예멘과 지부티·에리트레아 사이에 있어 홍해와 아덴만을 잇는 해협은?',
+      choices: ['호르무즈 해협', '말라카 해협', '바브엘만데브 해협', '지브롤터 해협'],
+      answerIndex: 2,
+      explanation: '가장 좁은 곳의 폭이 약 18마일(약 29km)이고, 유조선 통항로는 폭 2마일의 두 수로로 제한된다.',
+      source: 'EIA Today in Energy: Three important oil trade chokepoints are located around the Arabian Peninsula (2026-10 확인)'
+    },
+    {
+      id: 'geography-02',
+      question: '빈, 브라티슬라바, 부다페스트, 베오그라드 네 수도를 모두 지나는 유럽의 강은?',
+      choices: ['도나우강', '라인강', '엘베강', '비스와강'],
+      answerIndex: 0,
+      explanation: '독일 슈바르츠발트에서 발원해 유럽 10개국을 거쳐 흑해 연안의 삼각주로 흘러든다.',
+      source: 'WorldAtlas: Which River Passes Through Most National Capital Cities?, Wikipedia: Danube (2026-10 확인)'
+    },
+    {
+      id: 'geography-03',
+      question: '차가운 벵겔라 해류의 영향으로 아프리카 남서부 대서양 연안이 극도로 건조하고 사구에 아침 안개가 끼는 사막은?',
+      choices: ['칼라하리 사막', '사하라 사막', '누비아 사막', '나미브 사막'],
+      answerIndex: 3,
+      explanation: '나미비아 최서부를 차지하는 사막으로, 강수가 불규칙해 가뭄이 수년간 이어지기도 한다.',
+      source: 'NASA 지구관측소: Western Namibia, NASA: Namibia’s Coastal Desert (2026-10 확인)'
+    },
+    {
+      id: 'geography-04',
+      question: '뉴질랜드 남섬을 따라 달리는 알파인 단층(Alpine Fault)은 어느 두 판이 만나는 경계인가?',
+      choices: ['태평양판과 남극판', '태평양판과 오스트레일리아판', '나스카판과 남극판', '오스트레일리아판과 남극판'],
+      answerIndex: 1,
+      explanation: '두 판이 수평으로 어긋나며 스치는 변환단층이며, 한쪽 판의 융기로 남알프스 산맥이 솟아올랐다.',
+      source: 'Science Learning Hub(뉴질랜드): The Alpine Fault (2026-10 확인)'
+    },
+    {
+      id: 'geography-05',
+      question: '중국·미얀마·라오스·태국·캄보디아·베트남, 6개국을 차례로 거쳐 삼각주를 이루는 강은?',
+      choices: ['이라와디강', '살윈강', '차오프라야강', '메콩강'],
+      answerIndex: 3,
+      explanation: '길이가 5,000km에 가까운 이 강은 중국의 칭짱(티베트) 고원에서 발원한다.',
+      source: '메콩강위원회(MRC): Geography, Mekong River Basin (2026-10 확인)'
+    },
+    {
+      id: 'geography-06',
+      question: '지중해 연안 외에, 여름은 건조하고 겨울에 비가 오는 지중해성 기후 지역으로 꼽히는 곳은?',
+      choices: ['칠레 중부', '아르헨티나 팜파스', '호주 시드니 일대', '남아프리카 더반 일대'],
+      answerIndex: 0,
+      explanation: '지중해성 기후 지역은 지중해 연안, 캘리포니아, 칠레 중부, 남아프리카 케이프 지방, 호주 남서부의 다섯 곳으로 꼽힌다.',
+      source: 'Rundel 외, Fire and Plant Diversification in Mediterranean-Climate Regions, Frontiers in Plant Science 2018 (2026-10 확인)'
+    },
+    {
+      id: 'geography-07',
+      question: '이웃 나라가 모두 내륙국이어서 바다에 닿으려면 국경을 두 번 넘어야 하는, 이른바 이중 내륙국인 중앙아시아의 나라는?',
+      choices: ['카자흐스탄', '키르기스스탄', '우즈베키스탄', '투르크메니스탄'],
+      answerIndex: 2,
+      explanation: '카자흐스탄·키르기스스탄·타지키스탄·투르크메니스탄·아프가니스탄 5개 이웃이 모두 내륙국이다.',
+      source: '유엔 OHRLLS 내륙 개발도상국 목록, WorldAtlas: The World’s Two Double Landlocked Countries (2026-10 확인)'
+    },
+    {
+      id: 'geography-08',
+      question: '육지 해안선 없이 오직 해류로만 경계가 정해지는, 대서양 안에 있는 바다는?',
+      choices: ['카리브해', '사르가소해', '라브라도해', '북해'],
+      answerIndex: 1,
+      explanation: '서쪽의 멕시코만류, 북쪽의 북대서양해류, 동쪽의 카나리아해류, 남쪽의 북대서양적도해류가 경계를 이루며, 이름은 떠다니는 갈조류 사르가숨에서 왔다.',
+      source: 'NOAA 국립해양서비스 해양 상식: 사르가소해 Sargasso Sea (2026-10 확인)'
+    },
+    {
+      id: 'geography-09',
+      question: '오대호 가운데 호수 전체가 미국 영토 안에 들어 있는 호수는?',
+      choices: ['슈피리어호', '휴런호', '온타리오호', '미시간호'],
+      answerIndex: 3,
+      explanation: '부피로는 오대호 중 두 번째로 크며, 나머지 네 호수는 미국·캐나다 국경에 걸쳐 있다.',
+      source: 'EPA 오대호: Lake Michigan, NOAA EcoWatch: Lake Michigan (2026-10 확인)'
+    },
+    {
+      id: 'geography-10',
+      question: '러시아 본토와 떨어져 있으면서 폴란드·리투아니아와만 육지 국경을 맞댄 러시아의 행정구역은?',
+      choices: ['프스코프주', '칼리닌그라드주', '레닌그라드주', '카렐리야 공화국'],
+      answerIndex: 1,
+      explanation: '옛 동프로이센의 중심 지역으로, 2차 세계대전 후 소련에 편입되어 지금은 EU 회원국인 두 나라와 맞닿아 있다.',
+      source: 'BESA 센터: Kaliningrad — Russia’s Exclave in Europe (2026-10 확인)'
+    }
+  ],
   science: [],
   culture: []
 };
