@@ -184,7 +184,7 @@ function goHome() {
   renderCategoryScreen();
 }
 
-// 카테고리 선택 화면을 그린다. 라벨은 CATEGORY_LABELS에서 가져온다.
+// 시작 화면. 카테고리를 고르면 모드 선택 화면으로 넘어간다.
 function renderCategoryScreen() {
   const box = $('category-buttons');
   box.innerHTML = '';
@@ -194,11 +194,43 @@ function renderCategoryScreen() {
     button.className = 'big-button';
     button.textContent = CATEGORY_LABELS[key];
     button.addEventListener('click', function () {
-      startRound(key, state.mode);
+      renderModeScreen(key);
     });
     box.appendChild(button);
   });
   showScreen('category');
+}
+
+// 모드 선택 화면. 라벨과 설명은 MODES 테이블에서 가져온다.
+function renderModeScreen(category) {
+  state.category = category;
+  $('mode-heading').textContent = CATEGORY_LABELS[category] + ' · 모드를 고르세요';
+
+  const box = $('mode-buttons');
+  box.innerHTML = '';
+  MODE_KEYS.forEach(function (key) {
+    const mode = MODES[key];
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'big-button mode-button';
+
+    const label = document.createElement('span');
+    label.className = 'mode-label';
+    label.textContent = mode.label;
+    button.appendChild(label);
+
+    const desc = document.createElement('span');
+    desc.className = 'mode-desc';
+    desc.textContent = mode.desc;
+    button.appendChild(desc);
+
+    button.addEventListener('click', function () {
+      startRound(category, key);
+    });
+    box.appendChild(button);
+  });
+
+  showScreen('mode');
 }
 
 // 한 판을 시작한다.
@@ -436,6 +468,7 @@ if (typeof document !== 'undefined') {
       startRound(state.category, state.mode);
     });
     $('result-home').addEventListener('click', goHome);
+    $('mode-back').addEventListener('click', goHome);
     renderCategoryScreen();
   });
 }

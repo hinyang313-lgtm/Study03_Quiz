@@ -181,3 +181,40 @@ body {
   margin: 6px 0 0;
   font-weight: 700;
 }
+
+/* 시작 화면과 모드 선택 */
+h1 {
+  font-size: 26px;
+  margin: 0 0 4px;
+}
+
+.lead {
+  color: #5b6070;
+  margin: 0;
+}
+
+.mode-button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mode-label {
+  font-weight: 700;
+}
+
+.mode-desc {
+  font-size: 13px;
+  color: #8a8f9c;
+}
+
+.link-button {
+  font: inherit;
+  font-size: 14px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #5b6070;
+  text-decoration: underline;
+  cursor: pointer;
+}
