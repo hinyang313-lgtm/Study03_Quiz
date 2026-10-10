@@ -14,7 +14,7 @@
 
 스펙에서 그대로 옮긴 프로젝트 전역 요구사항. 모든 작업의 요구사항에 암묵적으로 포함된다.
 
-- 파일은 `index.html`, `style.css`, `questions.js`, `script.js` **4개만**. 5번째 파일을 만들지 않는다 (이 계획서와 PRD는 `docs/` 아래이므로 앱 파일이 아니다).
+- 파일은 `index.html`, `style.css`, `questions.js`, `script.js` **4개만**. 5번째 파일을 만들지 않는다 (`PRD.md`, `IMPL-PLAN.md`, `CLAUDE.md`는 문서이므로 앱 파일이 아니다).
 - `file://`에서 ES 모듈은 CORS로 차단된다. `import` / `export` / `<script type="module">`을 쓰지 않는다.
 - `fetch()`로 외부 데이터를 읽지 않는다. 문항은 `questions.js`에 인라인.
 - 스크립트 로드 순서: `questions.js` → `script.js`.
