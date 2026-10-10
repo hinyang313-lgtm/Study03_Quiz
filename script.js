@@ -248,18 +248,8 @@ function renderQuestion() {
   state.answered = false;
   state.hintUsed = false;
 
-  const box = $('quiz-choices');
-  box.innerHTML = '';
-  q.choices.forEach(function (choice, i) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'big-button choice';
-    button.textContent = choice.text;
-    button.addEventListener('click', function () {
-      selectChoice(i);
-    });
-    box.appendChild(button);
-  });
+  renderChoices();
+  resetHintButton();
 
   const feedback = $('quiz-feedback');
   feedback.hidden = true;
@@ -267,6 +257,28 @@ function renderQuestion() {
   $('quiz-next').hidden = true;
 
   startTimer();
+}
+
+// 보기를 그린다. 힌트로 지운 보기는 eliminated 플래그를 보고 계속 지워진 채로 둔다.
+function renderChoices() {
+  const q = state.questions[state.index];
+  const box = $('quiz-choices');
+  box.innerHTML = '';
+
+  q.choices.forEach(function (choice, i) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'big-button choice';
+    button.textContent = choice.text;
+    if (choice.eliminated) {
+      button.classList.add('is-eliminated');
+      button.disabled = true;
+    }
+    button.addEventListener('click', function () {
+      selectChoice(i);
+    });
+    box.appendChild(button);
+  });
 }
 
 function choiceButtons() {
@@ -278,6 +290,7 @@ function lockChoices(selectedIndex) {
   const q = state.questions[state.index];
   choiceButtons().forEach(function (button, i) {
     button.disabled = true;
+    if (q.choices[i].eliminated) return;   // 지운 보기는 강조하지 않는다
     if (q.choices[i].correct) button.classList.add('is-correct');
     if (i === selectedIndex && !q.choices[i].correct) button.classList.add('is-wrong');
   });
@@ -295,10 +308,13 @@ function recordResult(outcome) {
 
 function selectChoice(i) {
   if (state.answered) return;   // 빠른 연속 클릭으로 점수가 두 번 오르는 것을 막는다
+
+  const q = state.questions[state.index];
+  if (q.choices[i].eliminated) return;   // 힌트로 지운 보기는 고를 수 없다
+
   state.answered = true;
   stopTimer();
 
-  const q = state.questions[state.index];
   const isCorrect = q.choices[i].correct;
 
   if (isCorrect && !state.isReview) {
@@ -497,8 +513,37 @@ function handleTimeout() {
   showFeedback('timeout');
 }
 
-// 작업 12(힌트 모드)에서 채운다.
-function disableHint() {}
+// 힌트 모드. 오답 보기 2개를 지워 정답 1개 + 오답 1개를 남긴다.
+const HINT_LABEL = '힌트 (오답 2개 지우기)';
+const HINT_USED_LABEL = '힌트 사용함';
+
+function resetHintButton() {
+  const button = $('quiz-hint');
+  button.hidden = !MODES[state.mode].hint;
+  button.disabled = false;
+  button.textContent = HINT_LABEL;
+}
+
+function disableHint() {
+  const button = $('quiz-hint');
+  button.disabled = true;
+}
+
+function useHint() {
+  if (state.hintUsed || state.answered) return;
+  if (!MODES[state.mode].hint) return;
+
+  const q = state.questions[state.index];
+  const wrong = q.choices.filter(function (c) { return !c.correct && !c.eliminated; });
+  shuffle(wrong).slice(0, 2).forEach(function (c) { c.eliminated = true; });
+
+  state.hintUsed = true;
+  renderChoices();
+
+  const button = $('quiz-hint');
+  button.disabled = true;
+  button.textContent = HINT_USED_LABEL;
+}
 
 // ============================================================
 // 5. 저장소
@@ -517,6 +562,7 @@ if (typeof document !== 'undefined') {
     });
     $('result-home').addEventListener('click', goHome);
     $('mode-back').addEventListener('click', goHome);
+    $('quiz-hint').addEventListener('click', useHint);
     renderCategoryScreen();
   });
 }

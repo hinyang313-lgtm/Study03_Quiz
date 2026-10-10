@@ -229,3 +229,27 @@ h1 {
 #quiz-timer.is-danger {
   color: #d33a3a;
 }
+
+/* 힌트 모드 */
+.hint-button {
+  font: inherit;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid #c9ccd6;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hint-button:disabled {
+  color: #a6abb8;
+  cursor: default;
+}
+
+.choice.is-eliminated {
+  color: #b4b8c2;
+  text-decoration: line-through;
+  background: #f2f3f6;
+  border-color: #e2e4ea;
+}
