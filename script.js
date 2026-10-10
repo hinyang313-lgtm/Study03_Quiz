@@ -196,6 +196,125 @@ function renderCategoryScreen() {
 }
 
 // 한 판을 시작한다.
+// 현재 문항을 그린다. 피드백·[다음]은 숨기고 문항별 상태를 되돌린다.
+function renderQuestion() {
+  const q = state.questions[state.index];
+  if (!q) return;
+
+  $('quiz-context').textContent =
+    CATEGORY_LABELS[state.category] + ' · ' + MODES[state.mode].label + (state.isReview ? ' · 다시 풀기' : '');
+  $('quiz-progress').textContent = (state.index + 1) + ' / ' + state.questions.length;
+  $('quiz-score').textContent = state.isReview ? '점수 미반영' : '점수 ' + formatScore(state.score);
+  $('quiz-question').textContent = q.question;
+
+  state.answered = false;
+  state.hintUsed = false;
+
+  const box = $('quiz-choices');
+  box.innerHTML = '';
+  q.choices.forEach(function (choice, i) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'big-button choice';
+    button.textContent = choice.text;
+    button.addEventListener('click', function () {
+      selectChoice(i);
+    });
+    box.appendChild(button);
+  });
+
+  const feedback = $('quiz-feedback');
+  feedback.hidden = true;
+  feedback.innerHTML = '';
+  $('quiz-next').hidden = true;
+}
+
+function choiceButtons() {
+  return Array.prototype.slice.call($('quiz-choices').querySelectorAll('button'));
+}
+
+// 보기를 모두 잠그고, 정답인 보기를 강조한다. 위치가 아니라 correct 플래그로 찾는다.
+function lockChoices(selectedIndex) {
+  const q = state.questions[state.index];
+  choiceButtons().forEach(function (button, i) {
+    button.disabled = true;
+    if (q.choices[i].correct) button.classList.add('is-correct');
+    if (i === selectedIndex && !q.choices[i].correct) button.classList.add('is-wrong');
+  });
+}
+
+// 문항별 결과를 기록한다. 결과 화면에서 정답/오답/시간 초과를 보여주는 데 쓴다.
+function recordResult(outcome) {
+  const q = state.questions[state.index];
+  state.results.push({ id: q.id, outcome: outcome, hintUsed: state.hintUsed });
+  if (outcome !== 'correct') {
+    const target = state.isReview ? state.reviewWrongIds : state.wrongIds;
+    if (target.indexOf(q.id) === -1) target.push(q.id);
+  }
+}
+
+function selectChoice(i) {
+  if (state.answered) return;   // 빠른 연속 클릭으로 점수가 두 번 오르는 것을 막는다
+  state.answered = true;
+  stopTimer();
+
+  const q = state.questions[state.index];
+  const isCorrect = q.choices[i].correct;
+
+  if (isCorrect && !state.isReview) {
+    state.score += scoreFor(state.mode, true, state.hintUsed);
+  }
+  recordResult(isCorrect ? 'correct' : 'wrong');
+
+  lockChoices(i);
+  disableHint();
+  $('quiz-score').textContent = state.isReview ? '점수 미반영' : '점수 ' + formatScore(state.score);
+  showFeedback(isCorrect ? 'correct' : 'wrong');
+}
+
+// PRD 3.4: 정답 여부, 정답이 무엇인지, 한 줄 해설, 출처, [다음]
+function showFeedback(outcome) {
+  const q = state.questions[state.index];
+  const answer = q.choices.find(function (c) { return c.correct; });
+
+  const verdict = document.createElement('p');
+  verdict.className = 'verdict verdict-' + outcome;
+  if (outcome === 'correct') {
+    verdict.textContent = state.hintUsed && MODES[state.mode].hint ? '정답 (힌트 0.5점)' : '정답';
+  } else if (outcome === 'timeout') {
+    verdict.textContent = '시간 초과 — 정답: ' + answer.text;
+  } else {
+    verdict.textContent = '오답 — 정답: ' + answer.text;
+  }
+
+  const explanation = document.createElement('p');
+  explanation.className = 'explanation';
+  explanation.textContent = q.explanation;
+
+  const source = document.createElement('p');
+  source.className = 'source';
+  source.textContent = q.source;
+
+  const feedback = $('quiz-feedback');
+  feedback.innerHTML = '';
+  feedback.appendChild(verdict);
+  feedback.appendChild(explanation);
+  feedback.appendChild(source);
+  feedback.hidden = false;
+
+  $('quiz-next').hidden = false;
+  $('quiz-next').textContent = state.index + 1 >= state.questions.length ? '결과 보기' : '다음';
+}
+
+function nextQuestion() {
+  state.index += 1;
+  if (state.index >= state.questions.length) {
+    showResult();
+  } else {
+    renderQuestion();
+  }
+}
+
 function startRound(category, mode) {
   state.mode = mode;
   state.category = category;
@@ -209,7 +328,15 @@ function startRound(category, mode) {
   state.hintUsed = false;
   state.isReview = false;
   showScreen('quiz');
+  renderQuestion();
 }
+
+// 작업 11(스피드 모드)에서 채운다. 그때까지는 호출해도 아무 일도 하지 않는다.
+function startTimer() {}
+function stopTimer() {}
+
+// 작업 12(힌트 모드)에서 채운다.
+function disableHint() {}
 
 // ============================================================
 // 5. 저장소
@@ -222,6 +349,7 @@ function startRound(category, mode) {
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', function () {
     validateQuestions();
+    $('quiz-next').addEventListener('click', nextQuestion);
     renderCategoryScreen();
   });
 }

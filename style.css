@@ -55,3 +55,76 @@ body {
   font-size: 14px;
   margin: 4px 0 0;
 }
+
+/* 문제 화면 */
+.quiz-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: baseline;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e2e4ea;
+  color: #5b6070;
+  font-size: 14px;
+}
+
+#quiz-question {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 20px 0;
+}
+
+.choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.choice.is-correct {
+  border-color: #1b9e5a;
+  background: #e8f7ee;
+  font-weight: 700;
+}
+
+.choice.is-wrong {
+  border-color: #d33a3a;
+  background: #fdecec;
+}
+
+.feedback {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #e2e4ea;
+}
+
+.verdict {
+  margin: 0 0 8px;
+  font-weight: 700;
+}
+
+.verdict-correct { color: #1b9e5a; }
+.verdict-wrong,
+.verdict-timeout { color: #d33a3a; }
+
+.explanation {
+  margin: 0;
+}
+
+.source {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: #8a8f9c;
+}
+
+.next-button {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: 700;
+}

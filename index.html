@@ -16,7 +16,19 @@
       <div id="category-buttons" class="button-list"></div>
     </section>
 
-    <section id="screen-quiz" hidden></section>
+    <section id="screen-quiz" hidden>
+      <div class="quiz-bar">
+        <span id="quiz-context"></span>
+        <span id="quiz-progress"></span>
+        <span id="quiz-score"></span>
+        <span id="quiz-timer" hidden></span>
+      </div>
+      <h2 id="quiz-question"></h2>
+      <div id="quiz-choices" class="choice-list"></div>
+      <button id="quiz-hint" class="hint-button" type="button" hidden>힌트 (오답 2개 지우기)</button>
+      <div id="quiz-feedback" class="feedback" hidden></div>
+      <button id="quiz-next" class="big-button next-button" type="button" hidden>다음</button>
+    </section>
     <section id="screen-result" hidden></section>
     <section id="screen-leaderboard" hidden></section>
   </main>
