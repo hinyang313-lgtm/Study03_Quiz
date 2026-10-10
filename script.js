@@ -265,6 +265,8 @@ function renderQuestion() {
   feedback.hidden = true;
   feedback.innerHTML = '';
   $('quiz-next').hidden = true;
+
+  startTimer();
 }
 
 function choiceButtons() {
@@ -445,9 +447,55 @@ function updateRetryButton() {
   $('result-retry').hidden = true;
 }
 
-// 작업 11(스피드 모드)에서 채운다. 그때까지는 호출해도 아무 일도 하지 않는다.
-function startTimer() {}
-function stopTimer() {}
+// 스피드 모드 타이머. timeLimit이 null인 모드에서는 타이머를 아예 만들지 않는다.
+const TIMER_DANGER_AT = 5;
+
+function renderTimer() {
+  const timer = $('quiz-timer');
+  timer.textContent = '남은 시간 ' + state.remaining + '초';
+  timer.classList.toggle('is-danger', state.remaining <= TIMER_DANGER_AT);
+}
+
+function startTimer() {
+  stopTimer();   // 이전 타이머가 살아남아 겹치는 것을 막는다
+
+  const limit = MODES[state.mode].timeLimit;
+  const timer = $('quiz-timer');
+  if (limit === null) {
+    timer.hidden = true;
+    return;
+  }
+
+  state.remaining = limit;
+  timer.hidden = false;
+  renderTimer();
+
+  state.timerId = setInterval(function () {
+    state.remaining -= 1;
+    renderTimer();
+    if (state.remaining <= 0) handleTimeout();
+  }, 1000);
+}
+
+// 여러 번 불러도 안전해야 한다.
+function stopTimer() {
+  if (state.timerId !== null) {
+    clearInterval(state.timerId);
+    state.timerId = null;
+  }
+}
+
+// 시간이 다 되면 오답으로 처리하되 정답과 해설은 보여준다 (PRD 3.2).
+function handleTimeout() {
+  if (state.answered) return;
+  state.answered = true;
+  stopTimer();
+
+  recordResult('timeout');
+  lockChoices(-1);
+  disableHint();
+  showFeedback('timeout');
+}
 
 // 작업 12(힌트 모드)에서 채운다.
 function disableHint() {}

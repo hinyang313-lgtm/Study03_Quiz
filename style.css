@@ -218,3 +218,14 @@ h1 {
   text-decoration: underline;
   cursor: pointer;
 }
+
+/* 스피드 모드 타이머 */
+#quiz-timer {
+  margin-left: auto;
+  font-weight: 700;
+  color: #5b6070;
+}
+
+#quiz-timer.is-danger {
+  color: #d33a3a;
+}
