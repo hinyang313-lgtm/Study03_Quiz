@@ -184,7 +184,7 @@ function goHome() {
   renderCategoryScreen();
 }
 
-// 카테고리 선택 화면을 그린다. 라벨은 CATEGORY_LABELS에서 가져온다.
+// 시작 화면. 카테고리를 고르면 모드 선택 화면으로 넘어간다.
 function renderCategoryScreen() {
   const box = $('category-buttons');
   box.innerHTML = '';
@@ -194,11 +194,43 @@ function renderCategoryScreen() {
     button.className = 'big-button';
     button.textContent = CATEGORY_LABELS[key];
     button.addEventListener('click', function () {
-      startRound(key, state.mode);
+      renderModeScreen(key);
     });
     box.appendChild(button);
   });
   showScreen('category');
+}
+
+// 모드 선택 화면. 라벨과 설명은 MODES 테이블에서 가져온다.
+function renderModeScreen(category) {
+  state.category = category;
+  $('mode-heading').textContent = CATEGORY_LABELS[category] + ' · 모드를 고르세요';
+
+  const box = $('mode-buttons');
+  box.innerHTML = '';
+  MODE_KEYS.forEach(function (key) {
+    const mode = MODES[key];
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'big-button mode-button';
+
+    const label = document.createElement('span');
+    label.className = 'mode-label';
+    label.textContent = mode.label;
+    button.appendChild(label);
+
+    const desc = document.createElement('span');
+    desc.className = 'mode-desc';
+    desc.textContent = mode.desc;
+    button.appendChild(desc);
+
+    button.addEventListener('click', function () {
+      startRound(category, key);
+    });
+    box.appendChild(button);
+  });
+
+  showScreen('mode');
 }
 
 // 한 판을 시작한다.
@@ -216,23 +248,37 @@ function renderQuestion() {
   state.answered = false;
   state.hintUsed = false;
 
-  const box = $('quiz-choices');
-  box.innerHTML = '';
-  q.choices.forEach(function (choice, i) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.className = 'big-button choice';
-    button.textContent = choice.text;
-    button.addEventListener('click', function () {
-      selectChoice(i);
-    });
-    box.appendChild(button);
-  });
+  renderChoices();
+  resetHintButton();
 
   const feedback = $('quiz-feedback');
   feedback.hidden = true;
   feedback.innerHTML = '';
   $('quiz-next').hidden = true;
+
+  startTimer();
+}
+
+// 보기를 그린다. 힌트로 지운 보기는 eliminated 플래그를 보고 계속 지워진 채로 둔다.
+function renderChoices() {
+  const q = state.questions[state.index];
+  const box = $('quiz-choices');
+  box.innerHTML = '';
+
+  q.choices.forEach(function (choice, i) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'big-button choice';
+    button.textContent = choice.text;
+    if (choice.eliminated) {
+      button.classList.add('is-eliminated');
+      button.disabled = true;
+    }
+    button.addEventListener('click', function () {
+      selectChoice(i);
+    });
+    box.appendChild(button);
+  });
 }
 
 function choiceButtons() {
@@ -244,6 +290,7 @@ function lockChoices(selectedIndex) {
   const q = state.questions[state.index];
   choiceButtons().forEach(function (button, i) {
     button.disabled = true;
+    if (q.choices[i].eliminated) return;   // 지운 보기는 강조하지 않는다
     if (q.choices[i].correct) button.classList.add('is-correct');
     if (i === selectedIndex && !q.choices[i].correct) button.classList.add('is-wrong');
   });
@@ -261,10 +308,13 @@ function recordResult(outcome) {
 
 function selectChoice(i) {
   if (state.answered) return;   // 빠른 연속 클릭으로 점수가 두 번 오르는 것을 막는다
+
+  const q = state.questions[state.index];
+  if (q.choices[i].eliminated) return;   // 힌트로 지운 보기는 고를 수 없다
+
   state.answered = true;
   stopTimer();
 
-  const q = state.questions[state.index];
   const isCorrect = q.choices[i].correct;
 
   if (isCorrect && !state.isReview) {
@@ -408,17 +458,115 @@ function renderResultList() {
   });
 }
 
-// 작업 13(틀린 문제 복습)에서 채운다.
-function updateRetryButton() {
-  $('result-retry').hidden = true;
+// 복습 대상 목록. 원래 판이면 wrongIds, 복습 라운드 뒤면 reviewWrongIds.
+function retryTargetIds() {
+  return state.isReview ? state.reviewWrongIds : state.wrongIds;
 }
 
-// 작업 11(스피드 모드)에서 채운다. 그때까지는 호출해도 아무 일도 하지 않는다.
-function startTimer() {}
-function stopTimer() {}
+// 복습 버튼은 연습 모드이고 다시 풀 문항이 있을 때만 보인다.
+function updateRetryButton() {
+  const canRetry = MODES[state.mode].retry && retryTargetIds().length > 0;
+  $('result-retry').hidden = !canRetry;
+}
 
-// 작업 12(힌트 모드)에서 채운다.
-function disableHint() {}
+// 틀린 문항만으로 라운드를 시작한다. 점수와 원래 틀린 목록은 건드리지 않는다 (PRD 3.5).
+function startReviewRound() {
+  const ids = retryTargetIds().slice();
+  if (ids.length === 0) return;
+
+  state.questions = buildRoundFromIds(state.category, ids);
+  state.index = 0;
+  state.results = [];
+  state.reviewWrongIds = [];
+  state.answered = false;
+  state.hintUsed = false;
+  state.isReview = true;
+
+  showScreen('quiz');
+  renderQuestion();
+}
+
+// 스피드 모드 타이머. timeLimit이 null인 모드에서는 타이머를 아예 만들지 않는다.
+const TIMER_DANGER_AT = 5;
+
+function renderTimer() {
+  const timer = $('quiz-timer');
+  timer.textContent = '남은 시간 ' + state.remaining + '초';
+  timer.classList.toggle('is-danger', state.remaining <= TIMER_DANGER_AT);
+}
+
+function startTimer() {
+  stopTimer();   // 이전 타이머가 살아남아 겹치는 것을 막는다
+
+  const limit = MODES[state.mode].timeLimit;
+  const timer = $('quiz-timer');
+  if (limit === null) {
+    timer.hidden = true;
+    return;
+  }
+
+  state.remaining = limit;
+  timer.hidden = false;
+  renderTimer();
+
+  state.timerId = setInterval(function () {
+    state.remaining -= 1;
+    renderTimer();
+    if (state.remaining <= 0) handleTimeout();
+  }, 1000);
+}
+
+// 여러 번 불러도 안전해야 한다.
+function stopTimer() {
+  if (state.timerId !== null) {
+    clearInterval(state.timerId);
+    state.timerId = null;
+  }
+}
+
+// 시간이 다 되면 오답으로 처리하되 정답과 해설은 보여준다 (PRD 3.2).
+function handleTimeout() {
+  if (state.answered) return;
+  state.answered = true;
+  stopTimer();
+
+  recordResult('timeout');
+  lockChoices(-1);
+  disableHint();
+  showFeedback('timeout');
+}
+
+// 힌트 모드. 오답 보기 2개를 지워 정답 1개 + 오답 1개를 남긴다.
+const HINT_LABEL = '힌트 (오답 2개 지우기)';
+const HINT_USED_LABEL = '힌트 사용함';
+
+function resetHintButton() {
+  const button = $('quiz-hint');
+  button.hidden = !MODES[state.mode].hint;
+  button.disabled = false;
+  button.textContent = HINT_LABEL;
+}
+
+function disableHint() {
+  const button = $('quiz-hint');
+  button.disabled = true;
+}
+
+function useHint() {
+  if (state.hintUsed || state.answered) return;
+  if (!MODES[state.mode].hint) return;
+
+  const q = state.questions[state.index];
+  const wrong = q.choices.filter(function (c) { return !c.correct && !c.eliminated; });
+  shuffle(wrong).slice(0, 2).forEach(function (c) { c.eliminated = true; });
+
+  state.hintUsed = true;
+  renderChoices();
+
+  const button = $('quiz-hint');
+  button.disabled = true;
+  button.textContent = HINT_USED_LABEL;
+}
 
 // ============================================================
 // 5. 저장소
@@ -436,6 +584,9 @@ if (typeof document !== 'undefined') {
       startRound(state.category, state.mode);
     });
     $('result-home').addEventListener('click', goHome);
+    $('mode-back').addEventListener('click', goHome);
+    $('quiz-hint').addEventListener('click', useHint);
+    $('result-retry').addEventListener('click', startReviewRound);
     renderCategoryScreen();
   });
 }

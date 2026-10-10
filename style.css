@@ -181,3 +181,86 @@ body {
   margin: 6px 0 0;
   font-weight: 700;
 }
+
+/* 시작 화면과 모드 선택 */
+h1 {
+  font-size: 26px;
+  margin: 0 0 4px;
+}
+
+.lead {
+  color: #5b6070;
+  margin: 0;
+}
+
+.mode-button {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mode-label {
+  font-weight: 700;
+}
+
+.mode-desc {
+  font-size: 13px;
+  color: #8a8f9c;
+}
+
+.link-button {
+  font: inherit;
+  font-size: 14px;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: #5b6070;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* 스피드 모드 타이머 */
+#quiz-timer {
+  margin-left: auto;
+  font-weight: 700;
+  color: #5b6070;
+}
+
+#quiz-timer.is-danger {
+  color: #d33a3a;
+}
+
+/* 힌트 모드 */
+.hint-button {
+  font: inherit;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border: 1px solid #c9ccd6;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+}
+
+.hint-button:disabled {
+  color: #a6abb8;
+  cursor: default;
+}
+
+.choice.is-eliminated {
+  color: #b4b8c2;
+  text-decoration: line-through;
+  background: #f2f3f6;
+  border-color: #e2e4ea;
+}
+
+/* 페이지 맨 위의 제출자 표시 */
+.identity {
+  padding: 10px 16px;
+  background: #2b2f3a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+}

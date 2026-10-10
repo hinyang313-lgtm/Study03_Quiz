@@ -7,13 +7,19 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="container">
-    <section id="screen-mode" hidden></section>
+  <header class="identity">학번 2601957 이름 양해인</header>
 
+  <main class="container">
     <section id="screen-category" hidden>
-      <h1 id="category-heading">카테고리를 고르세요</h1>
-      <p id="category-note" class="note">순위표에 기록되지 않음</p>
+      <h1>상식 퀴즈</h1>
+      <p class="lead">카테고리를 고르세요</p>
       <div id="category-buttons" class="button-list"></div>
+    </section>
+
+    <section id="screen-mode" hidden>
+      <h1 id="mode-heading"></h1>
+      <div id="mode-buttons" class="button-list"></div>
+      <button id="mode-back" class="link-button" type="button">뒤로</button>
     </section>
 
     <section id="screen-quiz" hidden>
