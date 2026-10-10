@@ -141,9 +141,75 @@ function formatScore(n) {
 // 3. 상태
 // ============================================================
 
+// PRD 5.4의 상태 객체. 화면은 이 객체를 그리는 함수로만 만든다.
+const state = {
+  screen: 'category',   // 'mode' | 'category' | 'quiz' | 'result' | 'leaderboard'
+  mode: 'practice',
+  category: null,
+  questions: [],        // 섞인 판정용 문항 배열
+  index: 0,             // 현재 문항 위치
+  score: 0,
+  wrongIds: [],         // 원래 판에서 틀린 문항 id — 복습 대상
+  reviewWrongIds: [],   // 복습 라운드에서 새로 틀린 문항 id — 연속 복습에 쓴다
+  results: [],          // 문항별 결과 { id, outcome, hintUsed } — 결과 화면 표시용
+  answered: false,      // 현재 문항에 답했는지 (피드백 표시 중인지)
+  hintUsed: false,      // 현재 문항에서 힌트를 썼는지
+  timerId: null,
+  remaining: 0,
+  isReview: false,      // 복습 라운드인지 — true면 점수를 올리지 않는다
+};
+
 // ============================================================
 // 4. 화면 렌더링
 // ============================================================
+
+const SCREENS = ['mode', 'category', 'quiz', 'result', 'leaderboard'];
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+// 화면 하나만 보이게 한다.
+function showScreen(name) {
+  SCREENS.forEach(function (key) {
+    const section = $('screen-' + key);
+    if (section) section.hidden = key !== name;
+  });
+  state.screen = name;
+}
+
+// 카테고리 선택 화면을 그린다. 라벨은 CATEGORY_LABELS에서 가져온다.
+function renderCategoryScreen() {
+  const box = $('category-buttons');
+  box.innerHTML = '';
+  Object.keys(CATEGORY_LABELS).forEach(function (key) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'big-button';
+    button.textContent = CATEGORY_LABELS[key];
+    button.addEventListener('click', function () {
+      startRound(key, state.mode);
+    });
+    box.appendChild(button);
+  });
+  showScreen('category');
+}
+
+// 한 판을 시작한다.
+function startRound(category, mode) {
+  state.mode = mode;
+  state.category = category;
+  state.questions = buildRound(category);
+  state.index = 0;
+  state.score = 0;
+  state.wrongIds = [];
+  state.reviewWrongIds = [];
+  state.results = [];
+  state.answered = false;
+  state.hintUsed = false;
+  state.isReview = false;
+  showScreen('quiz');
+}
 
 // ============================================================
 // 5. 저장소
@@ -156,5 +222,6 @@ function formatScore(n) {
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', function () {
     validateQuestions();
+    renderCategoryScreen();
   });
 }

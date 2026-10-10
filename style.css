@@ -25,3 +25,33 @@ body {
     padding: 16px 12px;
   }
 }
+
+/* 공통 버튼 */
+.button-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.big-button {
+  font: inherit;
+  padding: 14px 16px;
+  border: 1px solid #c9ccd6;
+  border-radius: 8px;
+  background: #fff;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.big-button:hover:not(:disabled) {
+  border-color: #4a6cf7;
+  background: #f0f3ff;
+}
+
+.note {
+  color: #8a8f9c;
+  font-size: 14px;
+  margin: 4px 0 0;
+}
