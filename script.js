@@ -178,6 +178,12 @@ function showScreen(name) {
   state.screen = name;
 }
 
+// 시작 화면으로 돌아간다. 타이머가 살아남지 않게 먼저 정리한다.
+function goHome() {
+  stopTimer();
+  renderCategoryScreen();
+}
+
 // 카테고리 선택 화면을 그린다. 라벨은 CATEGORY_LABELS에서 가져온다.
 function renderCategoryScreen() {
   const box = $('category-buttons');
@@ -331,6 +337,82 @@ function startRound(category, mode) {
   renderQuestion();
 }
 
+// 결과 화면. 점수, 맞은 개수, 문항별 결과를 보여준다 (PRD 3.5).
+function showResult() {
+  stopTimer();
+
+  const total = state.questions.length;
+  const correctCount = state.results.filter(function (r) { return r.outcome === 'correct'; }).length;
+
+  $('result-heading').textContent = state.isReview
+    ? '다시 풀기 결과'
+    : CATEGORY_LABELS[state.category] + ' · ' + MODES[state.mode].label + ' 결과';
+
+  $('result-score').textContent = state.isReview
+    ? formatScore(state.score) + ' / 10 (다시 풀기는 점수에 반영되지 않음)'
+    : formatScore(state.score) + ' / 10';
+
+  $('result-correct').textContent = '맞은 개수 ' + correctCount + ' / ' + total;
+  $('result-note').hidden = MODES[state.mode].leaderboard;
+
+  renderResultList();
+  updateRetryButton();
+  showScreen('result');
+}
+
+const OUTCOME_LABELS = { correct: '정답', wrong: '오답', timeout: '시간 초과' };
+
+function renderResultList() {
+  const list = $('result-list');
+  list.innerHTML = '';
+
+  state.results.forEach(function (result) {
+    const q = state.questions.find(function (item) { return item.id === result.id; });
+    if (!q) return;
+
+    const li = document.createElement('li');
+    li.className = 'result-item result-' + result.outcome;
+
+    const badge = document.createElement('span');
+    badge.className = 'badge badge-' + result.outcome;
+    badge.textContent = (result.outcome === 'correct' && result.hintUsed && MODES[state.mode].hint)
+      ? '정답 (힌트 0.5점)'
+      : OUTCOME_LABELS[result.outcome];
+    li.appendChild(badge);
+
+    const question = document.createElement('p');
+    question.className = 'result-question';
+    question.textContent = q.question;
+    li.appendChild(question);
+
+    // 틀린 문항과 시간 초과 문항은 정답·해설·출처를 함께 보여준다.
+    if (result.outcome !== 'correct') {
+      const answer = q.choices.find(function (c) { return c.correct; });
+      const answerLine = document.createElement('p');
+      answerLine.className = 'result-answer';
+      answerLine.textContent = '정답: ' + answer.text;
+      li.appendChild(answerLine);
+
+      const explanation = document.createElement('p');
+      explanation.className = 'explanation';
+      explanation.textContent = q.explanation;
+      li.appendChild(explanation);
+
+      const source = document.createElement('p');
+      source.className = 'source';
+      source.textContent = q.source;
+      li.appendChild(source);
+    }
+
+    list.appendChild(li);
+  });
+}
+
+// 작업 13(틀린 문제 복습)에서 채운다.
+function updateRetryButton() {
+  $('result-retry').hidden = true;
+}
+
 // 작업 11(스피드 모드)에서 채운다. 그때까지는 호출해도 아무 일도 하지 않는다.
 function startTimer() {}
 function stopTimer() {}
@@ -350,6 +432,10 @@ if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', function () {
     validateQuestions();
     $('quiz-next').addEventListener('click', nextQuestion);
+    $('result-again').addEventListener('click', function () {
+      startRound(state.category, state.mode);
+    });
+    $('result-home').addEventListener('click', goHome);
     renderCategoryScreen();
   });
 }
